@@ -1,138 +1,138 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const MyApp());
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  ThemeMode _themeMode = ThemeMode.system;
-
-  bool get useLightMode {
-    switch (_themeMode) {
-      case ThemeMode.system:
-        return SchedulerBinding.instance.window.platformBrightness ==
-            Brightness.light;
-      case ThemeMode.light:
-        return true;
-      case ThemeMode.dark:
-        return false;
-    }
-  }
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Demo',
-      theme: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.light,
-      ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.dark,
-      ),
-      themeMode: _themeMode,
-      home: MyHomePage(
-        title: 'Material 3 Demo',
-        useLightMode: useLightMode,
-        handleBrightnessChange: (useLightMode) => setState(() {
-          _themeMode = useLightMode ? ThemeMode.light : ThemeMode.dark;
-        }),
+      home: Scaffold(
+        body: MyLoginPage(),
       ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({
-    super.key,
-    required this.title,
-    required this.handleBrightnessChange,
-    required this.useLightMode,
-  });
-  final String title;
-  final bool useLightMode;
-  final void Function(bool useLightMode) handleBrightnessChange;
+class MyLoginPage extends StatefulWidget {
+  const MyLoginPage({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyLoginPage> createState() => _MyLoginPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _MyLoginPageState extends State<MyLoginPage> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: ListView(
+        children: <Widget>[
+          Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(10),
+            child: const Text(
+              'Registro UNAH',
+              style: TextStyle(
+                color: Colors.purple,
+                fontWeight: FontWeight.w500,
+                fontSize: 30,
+              ),
+            ),
+          ),
+          Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(10),
+            child: const Text(
+              'Iniciar sesión',
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(10),
+            child: TextField(
+              controller: nameController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Usuario',
+              ),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+            child: TextField(
+              obscureText: true,
+              controller: passwordController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Contraseña',
+              ),
+            ),
+          ),
+          Container(
+            child: TextButton(
+              onPressed: () {},
+              child: const Text('¿Olvidaste tu contraseña?'),
+            ),
+            padding: const EdgeInsets.fromLTRB(0, 3, 0, 3),
+          ),
+          Container(
+            height: 50,
+            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            child: ElevatedButton(
+              child: const Text('Iniciar sesión'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const InicioSesion()),
+                );
+              },
+            ),
+          ),
+          Container(
+            height: 60,
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+            child: ElevatedButton(
+              child: const Text('Registrarme'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Registrarme()),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
+}
+
+class InicioSesion extends StatelessWidget {
+  const InicioSesion({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        actions: <Widget>[
-          _BrightnessButton(
-            handleBrightnessChange: widget.handleBrightnessChange,
-          ),
-        ],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton.large(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      appBar: AppBar(title: const Text('Inicio')),
+      body: const Center(child: Text('¡Bienvenido!')),
     );
   }
 }
 
-class _BrightnessButton extends StatelessWidget {
-  const _BrightnessButton({
-    required this.handleBrightnessChange,
-    this.showTooltipBelow = true,
-  });
-
-  final Function handleBrightnessChange;
-  final bool showTooltipBelow;
+class Registrarme extends StatelessWidget {
+  const Registrarme({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final isBright = Theme.of(context).brightness == Brightness.light;
-    return Tooltip(
-      preferBelow: showTooltipBelow,
-      message: 'Toggle brightness',
-      child: IconButton(
-        icon: isBright
-            ? const Icon(Icons.dark_mode_outlined)
-            : const Icon(Icons.light_mode_outlined),
-        onPressed: () => handleBrightnessChange(!isBright),
-      ),
+    return Scaffold(
+      appBar: AppBar(title: const Text('Registro de usuario')),
+      body: const Center(child: Text('Por favor ingrese sus datos')),
     );
   }
 }
